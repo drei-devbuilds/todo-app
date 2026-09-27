@@ -27,10 +27,6 @@ A simple Todo app built with **HTML, CSS, and JavaScript** to practice DOM manip
 * Working with modal interactions
 * CRUD operations
 
-## Preview
-
-*Add a screenshot or GIF of the app here.*
-
 ## Future Improvements
 
 * Local storage
