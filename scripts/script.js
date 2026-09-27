@@ -5,7 +5,6 @@ const search = document.querySelector('.search')
 const list_items = document.querySelectorAll('li')
 const delete_button = document.querySelector('.delete-button')
 const modal = document.querySelector('.modal')
-const modal_title = document.querySelector('.modal-title')
 const modal_body = document.querySelector('.modal-body')
 
 
@@ -71,6 +70,30 @@ ul.addEventListener('click', (e) => {
     const Del_button = e.target
     Del_button.closest('.list-item').remove()
   } else if (e.target.className == 'edit-button'){
-    openModal()
+    let target_item = e.target.closest('.list-item')
+    let target_title = target_item.firstElementChild.firstElementChild.textContent.trim()
+    openModal(target_title, target_item)
   }
 })
+
+
+const openModal = (old_title, target_item) => {
+  modal.style.display = 'flex'
+  modal_body.firstElementChild.value = old_title
+  modal.addEventListener('click', (e) => {
+    if(e.target.className == 'submit-edit'){
+      console.log('submit edit button hit')
+      let new_title = modal_body.firstElementChild.value.trim()
+      if(old_title.toLowerCase === new_title.toLowerCase){
+        closeModal()
+      }else{
+        target_item.firstElementChild.firstElementChild.textContent = new_title
+        closeModal()
+      }
+    }
+  })
+}
+
+const closeModal = () => {
+  modal.style.display = 'none'
+}
