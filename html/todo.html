@@ -49,22 +49,17 @@
       <ul class="list">
           <li class="list-item">
             <div class="list-title">
-              <p>Ariel's World</p>
+              <p>Programming practice</p>
             </div>
 
             <div class="list-buttons">
-              <button class="delete-button">Delete</button>
-              <button class="edit-button">Edit</button>
-            </div>
-          </li>
-          <li class="list-item">
-            <div class="list-title">
-              <p>Andrei's World</p>
-            </div>
+              <button class="list__button" id="list__delete">
+                      <img class="list__icon" id="list__icon--delete" src="../assets/delete-icon.svg" alt="Delete">
+              </button>
 
-            <div class="list-buttons">
-              <button class="delete-button">Delete</button>
-              <button class="edit-button">Edit</button>
+              <button class="list__button" id="list__edit">
+                      <img class="list__icon" id="list__icon--edit" src="../assets/edit-icon.svg" alt="edit">
+              </button>
             </div>
           </li>
       </ul>
@@ -81,16 +76,21 @@
       </div>
 
       <div class="modal-body">
-            <input type="text" class="edit-input" placeholder="Enter New Title">
+            <input type="text" class="modal-input" placeholder="Enter New Title">
             <div class="modal-buttons">
-                <button class="submit-edit">Submit</button>
-                <button class="cancel-edit">Cancel</button>
+                <button class="modal-submit">Submit</button>
+                <button class="modal-cancel">Cancel</button>
             </div>
       </div>
     </div>
   </div>
 
-
+  <div class="alert">
+    <figure class="alert__figure">
+      <img src="../assets/success-icon.svg" alt="alert-image" class="alert__image">
+    </figure>
+    <h4 class="alert__title" id="alert__title"></h4>
+  </div>
 
   <script src="../scripts/script.js"></script>
 </body>

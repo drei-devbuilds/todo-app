@@ -1,99 +1,144 @@
-const ul = document.querySelector('.list')
-const add = document.querySelector('.add-button')
-const input = document.querySelector('.add-input')
-const search = document.querySelector('.search')
-const list_items = document.querySelectorAll('li')
-const delete_button = document.querySelector('.delete-button')
-const modal = document.querySelector('.modal')
-const modal_body = document.querySelector('.modal-body')
+  const ul = document.querySelector('.list')
+  const addButton = document.querySelector('.add-button')
+  const addInput = document.querySelector('.add-input')
+  const search = document.querySelector('.search')
+
+  const modal = document.querySelector('.modal')
+  const modalInput = document.querySelector('.modal-input')
+  const modalSubmit = document.querySelector('.modal-submit')
+  const modalCancel = document.querySelector('.modal-cancel')
+
+  const alertDiv = document.querySelector('.alert')
+  const alertImage = document.querySelector('.alert__image')
+  const alertTitle = document.querySelector('.alert__title')
+
+  let currentEditItem = null;
+  let alertTimeout = null;
 
 
-add.addEventListener('click', (e) => {
-  if(input.value == ""){
-    console.log("Input value Empty: Please Enter title")
-  }else{
-    //Create Element
-    const li = document.createElement('li')
-    const delete_button = document.createElement('button')
-    const p = document.createElement('p')
-    const edit_button = document.createElement('button')
-    const submit_edit = document.createElement('button')
-    const edit_input = document.createElement('input')
-    const item_div = document.createElement('div')
-    const button_div = document.createElement('div')
+  addButton.addEventListener('click', (e) => {
+    clearTimeout(alertTimeout)
+    const title = addInput.value.trim()
+    const listItems = Array.from(document.querySelectorAll('.list-item'))
 
-    item_div.classList.add('list-title')
-    button_div.classList.add('list-buttons')
-    delete_button.classList.add('delete-button')
-    submit_edit.classList.add('submit-edit')
-    li.classList.add('list-item')
-    edit_button.classList.add('edit-button')
-    edit_input.classList.add('edit-input')
-    edit_input.placeholder = "Enter New Title";
-    edit_input.type = "text"
-
-
-    delete_button.textContent = 'Delete'
-    edit_button.textContent = 'Edit'
-    submit_edit.textContent = "Submit"
-    p.textContent = input.value  
-  
-    item_div.append(p)
-    button_div.append(delete_button)
-    button_div.append(edit_button)
-    button_div.append(edit_input)
-    button_div.append(submit_edit)
-    li.append(item_div)
-    li.append(button_div)
-    ul.prepend(li)
-
-    input.value = ""
-  }
-})
-
-search.addEventListener('input', (e) => {
-  
-  list_items.forEach(item => {
-
-    if(item.firstElementChild.textContent.trim().toLowerCase().includes(e.target.value)){
-      item.style.display = ""
-    }else{
-      item.style.display = "none"
+    if(title ===''){
+      openAlert('Failed', 'Error: Empty Field')
+      alertTimeout = setTimeout(() => closeAlert(), 3000)
+      return
     }
+
+    const duplicateChecker = listItems.find((item) => {
+      item = item.firstElementChild.firstElementChild.textContent.toLowerCase().trim()
+      return item === title.toLowerCase();
+    })
+
+    if(duplicateChecker){
+      openAlert('Failed', 'Error: Item Already exist')
+      alertTimeout = setTimeout(() => closeAlert(), 3000)
+      addInput.value = ''
+      return
+    }
+
+    createTodo(title)
+    openAlert('Success', 'Addition Successful')
+
+    alertTimeout = setTimeout(() => closeAlert(), 3000)
+    addInput.value = ''
   })
-  
-})
 
-ul.addEventListener('click', (e) => {
+  search.addEventListener('input', (e) => {
+    const searchValue = search.value.trim().toLowerCase()
+    const listItems = document.querySelectorAll('.list-item')
 
-  if(e.target.className == 'delete-button'){
-    const Del_button = e.target
-    Del_button.closest('.list-item').remove()
-  } else if (e.target.className == 'edit-button'){
-    let target_item = e.target.closest('.list-item')
-    let target_title = target_item.firstElementChild.firstElementChild.textContent.trim()
-    openModal(target_title, target_item)
-  }
-})
-
-
-const openModal = (old_title, target_item) => {
-  modal.style.display = 'flex'
-  modal_body.firstElementChild.value = old_title
-  modal.addEventListener('click', (e) => {
-    if(e.target.className == 'submit-edit'){
-      console.log('submit edit button hit')
-      let new_title = modal_body.firstElementChild.value.trim()
-      if(old_title.toLowerCase === new_title.toLowerCase){
-        closeModal()
+    listItems.forEach((item) => {
+      const titleList = item.firstElementChild.firstElementChild.textContent.trim().toLowerCase()
+      if (titleList.includes(searchValue)){
+        item.closest('.list-item').style.display = 'flex'
       }else{
-        target_item.firstElementChild.firstElementChild.textContent = new_title
-        closeModal()
+        item.closest('.list-item').style.display = 'none'
       }
-    }
+    })
   })
+
+
+  const createTodo = (title) =>{
+    
+    //item container
+    let li = document.createElement('li')
+
+    //item title
+    let titleDiv = document.createElement('div')
+    let titleText = document.createElement('p')
+
+    //item buttons
+    let listButtons = document.createElement('div')
+    let deleteButton = document.createElement('button')
+    let editButton = document.createElement('button')
+
+    //button Images
+    let deleteIcon = document.createElement('img')
+    let editIcon = document.createElement('img')
+
+    //ADD CLASSES AND OTHER TAGS
+
+    //classes item container
+    li.classList.add('list-item')
+
+    //classes item title
+    titleDiv.classList.add('list-title')
+
+    //classes item buttons
+    listButtons.classList.add('list-buttons')
+      //delete button
+      deleteButton.classList.add('list__button')
+      deleteButton.id.add = 'list__delete';
+
+      //edit button
+      editButton.classList.add('list__button')
+      editButton.id = 'list__edit';
+
+      //delete icon
+      deleteIcon.classList.add('list__icon')
+      deleteIcon.id = 'list__icon--delete';
+      deleteIcon.src = '../assets/delete-icon.svg';
+      deleteIcon.alt = 'delete'
+
+      //edit icon
+      editIcon.classList.add('list__icon')
+      editIcon.id.add = 'list__icon--edit';
+      editIcon.src = '../assets/edit-icon.svg';
+      editIcon.alt = 'edit'
+
+    //add title to title element
+    titleText.textContent = title;
+
+    //Insert Elements to each place
+
+    //title section
+    titleDiv.append(titleText)
+
+    //button section
+    deleteButton.append(deleteIcon)
+    editButton.append(editIcon)
+
+    listButtons.append(deleteButton)
+    listButtons.append(editButton)
+
+    //insert to li
+    li.append(titleDiv)
+    li.append(listButtons)
+
+    ul.prepend(li)
+  }
+
+
+const openAlert = (status, message) => {
+  alertImage.src = `../assets/${status.toLowerCase()}-icon.svg`;
+  alertTitle.textContent = message
+  alertDiv.classList.add('alert--active')
 }
 
-const closeModal = () => {
-  modal.style.display = 'none'
+
+const closeAlert = () => {
+  alertDiv.classList.remove('alert--active')
 }
