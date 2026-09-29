@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <style> 
+  .alert{
+    display: none;
+  }
+  </style>
+  <div class="alert">
+    <h1 class="alert__title">hello this is an alert</h1>
+  </div>
+      <a href="" class="button-submit">submit</a>
+  <script>
+    const alert_parent = document.querySelector('.alert')
+    const submit_button = document.querySelector('.button-submit')
+
+    submit_button.addEventListener('click', (e) => {
+      if(e.target.className == "button-submit"){
+        console.log(submit_button)
+      }
+    })
+  </script>
+</body>
+</html>
