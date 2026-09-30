@@ -15,7 +15,7 @@
   let currentEditItem = null;
   let alertTimeout = null;
 
-
+  //Create
   addButton.addEventListener('click', (e) => {
     clearTimeout(alertTimeout)
     const title = addInput.value.trim()
@@ -35,7 +35,7 @@
     if(duplicateChecker){
       openAlert('Failed', 'Error: Item Already exist')
       alertTimeout = setTimeout(() => closeAlert(), 3000)
-      addInput.value = ''
+      addInput.value = '';
       return
     }
 
@@ -46,6 +46,7 @@
     addInput.value = ''
   })
 
+  //read
   search.addEventListener('input', (e) => {
     const searchValue = search.value.trim().toLowerCase()
     const listItems = document.querySelectorAll('.list-item')
@@ -59,6 +60,38 @@
       }
     })
   })
+
+  //Update and Delete
+  ul.addEventListener('click', (e) => {
+
+    if (e.target.id.includes('list__icon--delete')){
+      clearTimeout(alertTimeout)
+      const listItem = e.target.closest('.list-item')
+
+      if (listItem) {
+        listItem.remove()
+        openAlert('Success', 'Delete Successful')
+        setTimeout(() => closeAlert(), 2000)
+      }else{
+        openAlert('Failed', 'Delete Failed')
+        setTimeout(() => closeAlert(), 2000)
+      }
+    }
+
+    if (e.target.id.includes('list__icon--edit')) {
+      clearTimeout(alertTimeout)
+      const listItem = e.target.closest('.list-item')
+
+      if (listItem) {
+        currentEditItem = listItem
+        openModal()
+      } else {
+        openAlert('Failed', 'Edit Failed')
+        setTimeout(() => closeAlert(), 2000)
+      }
+    }
+  })
+
 
 
   const createTodo = (title) =>{
@@ -141,4 +174,43 @@ const openAlert = (status, message) => {
 
 const closeAlert = () => {
   alertDiv.classList.remove('alert--active')
+}
+
+const openModal = () => {
+  modal.style.display = 'flex'
+  modalInput.value = currentEditItem.querySelector('.list-title p').textContent
+  modalInput.focus()
+}
+
+modalSubmit.addEventListener('click', () => {
+  let currentTitle = currentEditItem.querySelector('.list-title p').textContent.trim().toLowerCase()
+  let newtitle = modalInput.value
+
+  if(newtitle.trim().toLowerCase() === currentTitle){
+    openAlert('Failed', 'No changes detected')
+    setTimeout(() => closeAlert(), 2000)
+    return
+  }
+
+  editItem(newtitle)
+})
+
+
+modalCancel.addEventListener('click', () => {
+    closeModal()
+})
+
+const closeModal =() => {
+  modal.style.display = 'none'
+}
+
+const editItem = (title) => {
+  if(title === ''){
+    openAlert('Failed', 'Empty Value')
+    setTimeout(() => closeAlert(), 2000)
+    return
+  }
+
+  currentEditItem.querySelector('.list-title p').textContent = title
+  closeModal()
 }
