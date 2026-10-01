@@ -4,26 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="stylesheet" href="../css/grid.css">
 </head>
 <body>
-  <style> 
-  .alert{
-    display: none;
-  }
-  </style>
-  <div class="alert">
-    <h1 class="alert__title">hello this is an alert</h1>
+  
+  <div class="notes-container">
+    <div class="image-container">
+          <img src="../assets/samsung-phone.jpg" alt="">
+    </div>
+    <div class="item">
+      <p>Samsung s21 ultra</p>
+    </div>
   </div>
-      <a href="" class="button-submit">submit</a>
-  <script>
-    const alert_parent = document.querySelector('.alert')
-    const submit_button = document.querySelector('.button-submit')
 
-    submit_button.addEventListener('click', (e) => {
-      if(e.target.className == "button-submit"){
-        console.log(submit_button)
-      }
-    })
-  </script>
 </body>
 </html>
